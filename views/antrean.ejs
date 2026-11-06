@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id" class="notranslate" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Display Antrean Poli OBGYN — dr. Shodiq Kukuh, Sp.OG</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 24px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f4f6f8 url('/bg-klinik.png') center/cover no-repeat;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            color: #1e293b;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(240, 244, 248, 0.35) 100%);
+            backdrop-filter: blur(1.5px);
+            z-index: 0;
+        }
+
+        .tv-container {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header Display */
+        .tv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .mother-icon {
+            width: 65px;
+            height: 65px;
+        }
+        .header-titles h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+            color: #064e3b;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+        }
+        .header-titles h2 {
+            margin: 2px 0 0 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .header-titles p {
+            margin: 4px 0 0 0;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #b45309;
+            text-transform: uppercase;
+        }
+
+        /* Widget Jam & Hari Digital Kanan Atas */
+        .clock-widget {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(6, 78, 59, 0.35);
+            border: 2px solid #fbbf24;
+        }
+        .clock-widget .date-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fef08a;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .clock-widget .time-text {
+            font-size: 34px;
+            font-weight: 800;
+            color: #fbbf24;
+            line-height: 1;
+            letter-spacing: 1px;
+        }
+        .clock-widget .zone-text {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            margin-top: 3px;
+            color: #e2e8f0;
+        }
+
+        /* Main Content Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 24px;
+            flex-grow: 1;
+            margin-bottom: 16px;
+        }
+
+        /* Left Column: Card Pasien Dipanggil dengan Watermark Siluet Ibu Hamil */
+        .call-card {
+            background: linear-gradient(145deg, #04382c 0%, #022c22 100%);
+            border-radius: 28px;
+            padding: 30px 24px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 20px 45px rgba(2, 44, 34, 0.5), inset 0 0 30px rgba(251, 191, 36, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Siluet Ibu Hamil Estetik di Background Card Kiri */
+        .card-bg-silhouette {
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            width: 220px;
+            height: 220px;
+            fill: #fbbf24;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .badge-banner {
+            background: linear-gradient(90deg, #d97706 0%, #fbbf24 50%, #d97706 100%);
+            color: #022c22;
+            padding: 10px 30px;
+            border-radius: 24px;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 6px 15px rgba(217, 119, 6, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #fef08a;
+            z-index: 1;
+        }
+
+        .patient-info-wrapper {
+            z-index: 1;
+            position: relative;
+        }
+
+        .patient-id-large {
+            font-size: 72px;
+            font-weight: 800;
+            background: linear-gradient(180deg, #ffffff 0%, #fef08a 40%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.5));
+            line-height: 1.1;
+        }
+
+        .patient-name-large {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .patient-age-large {
+            font-size: 17px;
+            color: #fde68a;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .room-info-pill {
+            background: rgba(2, 44, 34, 0.85);
+            border: 2px solid #fbbf24;
+            border-radius: 18px;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            z-index: 1;
+            position: relative;
+        }
+        .room-info-pill .room-icon {
+            width: 32px;
+            height: 32px;
+            fill: #fbbf24;
+        }
+        .room-text-box {
+            text-align: left;
+        }
+        .room-text-box p {
+            margin: 0;
+            font-size: 11px;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .room-text-box h4 {
+            margin: 0;
+            font-size: 20px;
+            color: #fbbf24;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        /* Right Column: Tabel List Antrean */
+        .table-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.8);
+            display: flex;
+            flex-direction: column;
+        }
+        .table-title-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .table-title-box h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .custom-table-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .queue-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+        .queue-table th {
+            background: #064e3b;
+            color: #ffffff;
+            padding: 14px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .queue-table th:first-child { border-radius: 12px 0 0 12px; }
+        .queue-table th:last-child { border-radius: 0 12px 12px 0; }
+
+        .queue-table tbody tr {
+            background: #ffffff;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.04);
+            transition: 0.2s;
+        }
+        .queue-table td {
+            padding: 12px;
+            font-size: 13px;
+            color: #334155;
+            vertical-align: middle;
+        }
+        .queue-table td:first-child { border-radius: 12px 0 0 12px; }
+        .queue-table td:last-child { border-radius: 0 12px 12px 0; }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 11px;
+            display: inline-block;
+        }
+        .bg-menunggu { background: #fef08a; color: #854d0e; }
+        .bg-diperiksa { background: #2563eb; color: #ffffff; animation: blink 1s infinite; }
+        .bg-selesai { background: #059669; color: #ffffff; }
+        .bg-batal { background: #dc2626; color: #ffffff; }
+        @keyframes blink { 50% { opacity: 0.6; } }
+
+        .btn-call {
+            background: #2563eb; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+        }
+        .btn-stop {
+            background: #dc2626; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; animation: pulse 1s infinite;
+        }
+        .btn-done {
+            background: #059669; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* Footer Information Bar */
+        .info-footer {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            border-radius: 16px;
+            padding: 14px 24px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            border: 2px solid #fbbf24;
+            box-shadow: 0 8px 25px rgba(6, 78, 59, 0.3);
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .info-item svg { 
+            width: 22px; 
+            height: 22px; 
+            fill: #fbbf24; 
+            flex-shrink: 0; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+    </style>
+</head>
+<body>
+    <div class="tv-container">
+        
+        <!-- Header Utama Display -->
+        <header class="tv-header">
+            <div class="brand-box">
+                <svg class="mother-icon" viewBox="0 0 100 100">
+                    <path fill="#d97706" d="M50,10 A15,15 0 1,0 65,25 A15,15 0 0,0 50,10 Z M45,35 C35,35 30,45 30,60 C30,75 40,85 50,85 C62,85 70,72 65,55 C60,42 55,35 45,35 Z M52,50 A8,8 0 1,1 44,42 A8,8 0 0,1 52,50 Z"/>
+                </svg>
+                <div class="header-titles">
+                    <h1>POLI OBSTETRI & GINEKOLOGI</h1>
+                    <h2>dr. Shodiq Kukuh, Sp.OG</h2>
+                    <p>M E L A Y A N I &nbsp; D E N G A N &nbsp; H A T I</p>
+                </div>
+            </div>
+
+            <!-- Widget Jam & Hari Digital Kanan Atas -->
+            <div class="clock-widget">
+                <div id="date-display" class="date-text">--</div>
+                <div id="time-display" class="time-text">--:--</div>
+                <div class="zone-text">WIB</div>
+            </div>
+        </header>
+
+        <!-- Body Main Content Layout -->
+        <main class="main-layout">
+            
+            <!-- Sisi Kiri: Pasien Sedang Dipanggil dengan Siluet Estetik Ibu Hamil -->
+            <section class="call-card">
+                <!-- Siluet Vektor Ibu Hamil di Latar Belakang Kartu -->
+                <svg class="card-bg-silhouette" viewBox="0 0 100 100">
+                    <path d="M50,10 A15,15 0 1,0 65,25 A15,15 0 0,0 50,10 Z M45,35 C35,35 30,45 30,60 C30,75 40,85 50,85 C62,85 70,72 65,55 C60,42 55,35 45,35 Z M52,50 A8,8 0 1,1 44,42 A8,8 0 0,1 52,50 Z"/>
+                </svg>
+
+                <div class="badge-banner">
+                    <span>📢</span> PASIEN SEDANG DIPANGGIL
+                </div>
+
+                <div class="patient-info-wrapper">
+                    <div id="display-id" class="patient-id-large">POG-001</div>
+                    <div id="display-nama" class="patient-name-large">Ny. Siti Aminah</div>
+                    <div id="display-usia" class="patient-age-large">(28 Tahun)</div>
+                </div>
+
+                <div class="room-info-pill">
+                    <svg class="room-icon" viewBox="0 0 24 24">
+                        <path d="M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19M11,7H13V9H11V7M11,11H13V17H11V11Z"/>
+                    </svg>
+                    <div class="room-text-box">
+                        <p>Silakan menuju</p>
+                        <h4>Ruang Pemeriksaan</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sisi Kanan: Daftar Antrean Pasien Hari Ini -->
+            <section class="table-card">
+                <div class="table-title-box">
+                    <span style="font-size: 20px;">📋</span>
+                    <h3>Daftar Antrean Pasien Hari Ini</h3>
+                </div>
+
+                <div class="custom-table-wrapper">
+                    <table class="queue-table">
+                        <thead>
+                            <tr>
+                                <th>NO / ID</th>
+                                <th>NAMA PASIEN</th>
+                                <th>SUAMI</th>
+                                <th>STATUS</th>
+                                <th style="text-align: center;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (!pasienList || pasienList.length === 0) { %>
+                                <tr><td colspan="5" style="text-align: center; opacity: 0.7; padding: 20px;">Belum ada antrean hari ini.</td></tr>
+                            <% } else { %>
+                                <% pasienList.forEach(p => { %>
+                                    <tr>
+                                        <td><strong style="color: #064e3b;"><%= p.id %></strong></td>
+                                        <td>
+                                            <strong><%= p.nama %></strong><br>
+                                            <span style="font-size: 11px; opacity: 0.7;">(<%= p.usia %> thn)</span>
+                                        </td>
+                                        <td><%= p.suami %></td>
+                                        <td>
+                                            <span id="badge-<%= p.id %>" class="status-badge bg-<%= (p.status_antrean || 'Menunggu').toLowerCase() %>">
+                                                ✓ <%= p.status_antrean || 'Menunggu' %>
+                                            </span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <div style="display: inline-flex; gap: 4px;">
+                                                <button id="btn-panggil-<%= p.id %>" type="button" class="btn-call" onclick="togglePanggilan('<%= p.id %>', '<%= p.nama %>', '<%= p.usia %>')">
+                                                    🔊 Panggil
+                                                </button>
+                                                
+                                                <form action="/antrean/<%= p.id %>/status" method="POST" style="display: inline;" onsubmit="stopSuara()">
+                                                    <button type="submit" name="status" value="Selesai" class="btn-done">
+                                                        ✓ Selesai
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Information Bar Footer -->
+        <footer class="info-footer">
+            <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,7V13H17V11.5H12.5V7H11Z"/></svg>
+                <span>Mohon menunggu panggilan sesuai nomor antrean</span>
+            </div>
+            <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/></svg>
+                <span>Siapkan kartu identitas dan berkas pemeriksaan</span>
+            </div>
+            <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17A1.5,1.5 0 0,1 10.5,15.5A1.5,1.5 0 0,1 12,14A1.5,1.5 0 0,1 13.5,15.5A1.5,1.5 0 0,1 12,17M12,7A2,2 0 0,1 14,9C14,10.5 12.5,11.25 12.5,12.5H11C11,10.75 12.5,10 12.5,9A0.5,0.5 0 0,0 12,8.5A0.5,0.5 0 0,0 11.5,9H10A2,2 0 0,1 12,7Z"/></svg>
+                <span>Mohon menjaga ketenangan di ruang tunggu</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Jam Digital Realtime
+        function updateClock() {
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            document.getElementById('date-display').innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            document.getElementById('time-display').innerText = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        let activeCallingId = null;
+        let isCallingLoop = false;
+
+        // Sound Bel Ting-Tong
+        function playChime() {
+            return new Promise((resolve) => {
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContext) return resolve();
+                    
+                    const ctx = new AudioContext();
+                    
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(659.25, ctx.currentTime);
+                    gain1.gain.setValueAtTime(0.3, ctx.currentTime);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+                    osc1.connect(gain1);
+                    gain1.connect(ctx.destination);
+                    
+                    osc1.start(ctx.currentTime);
+                    osc1.stop(ctx.currentTime + 0.8);
+
+                    setTimeout(() => {
+                        const osc2 = ctx.createOscillator();
+                        const gain2 = ctx.createGain();
+                        osc2.type = 'sine';
+                        osc2.frequency.setValueAtTime(523.25, ctx.currentTime);
+                        gain2.gain.setValueAtTime(0.3, ctx.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                        osc2.connect(gain2);
+                        gain2.connect(ctx.destination);
+                        
+                        osc2.start(ctx.currentTime);
+                        osc2.stop(ctx.currentTime + 1.2);
+
+                        setTimeout(resolve, 1200);
+                    }, 400);
+
+                } catch (e) {
+                    resolve();
+                }
+            });
+        }
+
+        // Toggle Panggil Berulang vs Stop
+        function togglePanggilan(idPasien, namaPasien, usiaPasien) {
+            if (activeCallingId === idPasien && isCallingLoop) {
+                stopSuara();
+            } else {
+                stopSuara();
+
+                activeCallingId = idPasien;
+                isCallingLoop = true;
+
+                // Update Box Kiri Pasien Sedang Dipanggil
+                document.getElementById('display-id').innerText = idPasien;
+                document.getElementById('display-nama').innerText = namaPasien;
+                document.getElementById('display-usia').innerText = `(${usiaPasien} Tahun)`;
+
+                // Update Badge Tabel Status
+                const badge = document.getElementById(`badge-${idPasien}`);
+                if (badge) {
+                    badge.className = 'status-badge bg-diperiksa';
+                    badge.innerText = '✓ Diperiksa';
+                }
+
+                // Ubah Tombol Jadi Berhenti
+                const btn = document.getElementById(`btn-panggil-${idPasien}`);
+                if (btn) {
+                    btn.className = 'btn-stop';
+                    btn.innerText = '⏹️ Berhenti';
+                }
+
+                fetch(`/antrean/${idPasien}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'status=Diperiksa'
+                });
+
+                loopPanggilan(idPasien, namaPasien);
+            }
+        }
+
+        // Loop Panggilan Suara Berulang
+        async function loopPanggilan(idPasien, namaPasien) {
+            if (!isCallingLoop || activeCallingId !== idPasien) return;
+
+            await playChime();
+
+            if (!isCallingLoop || activeCallingId !== idPasien) return;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+
+                const teks = `Nomor antrean ${idPasien}, ${namaPasien}, silakan masuk ke ruang periksa dokter Shodiq Kukuh.`;
+                const utterance = new SpeechSynthesisUtterance(teks);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+
+                utterance.onend = function() {
+                    if (isCallingLoop && activeCallingId === idPasien) {
+                        setTimeout(() => {
+                            loopPanggilan(idPasien, namaPasien);
+                        }, 3000);
+                    }
+                };
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Hentikan Suara Panggilan
+        function stopSuara() {
+            isCallingLoop = false;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+
+            if (activeCallingId) {
+                const btn = document.getElementById(`btn-panggil-${activeCallingId}`);
+                if (btn) {
+                    btn.className = 'btn-call';
+                    btn.innerText = '🔊 Panggil';
+                }
+                activeCallingId = null;
+            }
+        }
+    </script>
+</body>
+</html>

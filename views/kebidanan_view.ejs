@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poli Kebidanan & SOAP — SIM-OBGYN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            background: #f0f4f1; 
+            color: #1e293b; 
+            padding: 24px; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0; 
+        }
+        .container { max-width: 1300px; margin: auto; }
+        
+        .header { 
+            background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+            color: white; 
+            padding: 22px 28px; 
+            border-radius: 18px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 24px; 
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card { 
+            background: white; 
+            padding: 24px; 
+            border-radius: 18px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03); 
+            border: 1px solid #e2e8f0; 
+        }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th { 
+            background: #064e3b; 
+            color: white; 
+            padding: 14px 12px; 
+            font-size: 11px; 
+            font-weight: 800;
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            text-align: left; 
+        }
+        th:first-child { border-radius: 10px 0 0 10px; }
+        th:last-child { border-radius: 0 10px 10px 0; }
+
+        td { 
+            padding: 14px 12px; 
+            border-bottom: 1px solid #f1f5f9; 
+            font-size: 13px; 
+            color: #334155;
+            vertical-align: middle;
+        }
+        tr:hover { background: #f8fafc; }
+
+        .badge-id {
+            background: #e6f4ea;
+            color: #064e3b;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .btn-soap { 
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 12px; 
+            box-shadow: 0 4px 12px rgba(6, 78, 59, 0.2);
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .btn-soap:hover { transform: translateY(-2px); }
+
+        .logout-btn { 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            padding: 10px 18px; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 12px; 
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.2s;
+        }
+        .logout-btn:hover { background: rgba(255,255,255,0.35); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Akun Bidan -->
+        <div class="header">
+            <div>
+                <h1 style="margin: 0; font-size: 24px; font-weight: 800;">🩺 Poli Kebidanan & Rekam Medis (SOAP)</h1>
+                <p style="margin: 4px 0 0 0; font-size: 13px; opacity: 0.9; font-weight: 600;">Panel Pemeriksaan Klinis Dokter & Bidan — RS Utama Husada</p>
+            </div>
+            <a href="/login" class="logout-btn">🚪 Keluar Akun</a>
+        </div>
+
+        <!-- Daftar Antrean Pasien -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin: 0; color: #064e3b; font-size: 16px; font-weight: 800;">Daftar Antrean Pasien Menunggu Pemeriksaan</h3>
+                <button onclick="location.reload()" style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; color: #334155;">🔄 Refresh Antrean</button>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Pasien</th>
+                            <th>Nama Pasien & NIK</th>
+                            <th>Nama Suami</th>
+                            <th>Jenis Kunjungan</th>
+                            <th>Alamat Domisili</th>
+                            <th style="text-align: center;">Aksi SOAP & Kasir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (!pasienList || pasienList.length === 0) { %>
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: #94a3b8; padding: 50px; font-weight: 600;">
+                                    Belum ada pasien menunggu di poli kebidanan saat ini.<br>
+                                    <small style="font-weight: normal;">Silakan daftarkan pasien melalui akun Loket Pendaftaran terlebih dahulu.</small>
+                                </td>
+                            </tr>
+                        <% } else { %>
+                            <% pasienList.forEach(p => { %>
+                                <tr>
+                                    <td><span class="badge-id"><%= p.id %></span></td>
+                                    <td>
+                                        <strong style="color: #0f172a; font-size: 14px;"><%= p.nama %></strong><br>
+                                        <span style="font-size: 11px; color: #64748b;">NIK: <%= p.nik || '-' %> | Usia: <%= p.usia %> Thn</span>
+                                    </td>
+                                    <td><%= p.suami || '-' %></td>
+                                    <td><span style="color: #059669; font-weight: 700; background: #e6f4ea; padding: 4px 8px; border-radius: 6px;"><%= p.jenis_kunjungan || 'USG' %></span></td>
+                                    <td><%= p.alamat || '-' %></td>
+                                    <td style="text-align: center;">
+                                        <a href="/pasien/<%= p.id %>" class="btn-soap">Isi SOAP & Kasir →</a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kwitansi Kasir - <%= pasien.nama %></title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 30px; }
+        .box { border: 1px solid #000; padding: 20px; max-width: 600px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #eee; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+    <div style="text-align: center; margin-bottom: 15px;" class="no-print">
+        <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer;">🖨️ Cetak Kwitansi</button>
+    </div>
+
+    <div class="box">
+        <h3 style="text-align: center; margin-top: 0;">KWITANSI PEMBAYARAN</h3>
+        <p><strong>No. Transaksi:</strong> <%= kunjungan.id_kunjungan %></p>
+        <p><strong>Tanggal:</strong> <%= kunjungan.tanggal %></p>
+        <p><strong>Nama Pasien:</strong> <%= pasien.nama %> (Suami: <%= pasien.suami %>)</p>
+
+        <table>
+            <thead>
+                <tr><th>Layanan / Item</th><th>Biaya (Rp)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Jasa Konsultasi Dokter</td><td>Rp <%= kunjungan.kasir.biaya_konsultasi.toLocaleString('id-ID') %></td></tr>
+                <tr><td>Tindakan / USG Kebidanan</td><td>Rp <%= kunjungan.kasir.biaya_usg.toLocaleString('id-ID') %></td></tr>
+                <tr><td>Farmasi / Resep Obat</td><td>Rp <%= kunjungan.kasir.biaya_obat.toLocaleString('id-ID') %></td></tr>
+                <tr style="font-weight: bold; background: #f9f9f9;">
+                    <td>TOTAL PEMBAYARAN</td>
+                    <td>Rp <%= kunjungan.kasir.total.toLocaleString('id-ID') %></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 40px; text-align: right;">
+            <p>Kasir / Petugas,</p>
+            <br><br>
+            <p>_______________________</p>
+        </div>
+    </div>
+</body>
+</html>

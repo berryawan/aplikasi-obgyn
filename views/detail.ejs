@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekam Medis Pasien — SIM-OBGYN</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #f0f4f1; color: #1e293b; padding: 24px; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
+        .app-container { max-width: 1300px; margin: auto; }
+        
+        .header-back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #064e3b; font-weight: 700; font-size: 13px; margin-bottom: 16px; background: white; padding: 8px 16px; border-radius: 10px; border: 1px solid #cbd5e1; }
+        
+        .patient-profile-card { background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); color: white; padding: 24px; border-radius: 18px; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(6, 78, 59, 0.2); }
+        .profile-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+        .profile-item { background: rgba(255, 255, 255, 0.1); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); }
+        .profile-item label { display: block; font-size: 11px; color: #cbd5e1; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+        .profile-item span { font-size: 15px; font-weight: 700; color: #ffffff; }
+
+        .layout-grid { display: grid; grid-template-columns: 420px 1fr; gap: 24px; }
+        .card-box { background: white; padding: 24px; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; height: fit-content; }
+        
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; background: #fafafa; }
+        .form-control:focus { outline: none; border-color: #064e3b; background: white; box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12); }
+
+        .lab-checklist-box { display: grid; grid-template-columns: 1fr; gap: 8px; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .lab-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+        .btn-submit { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25); }
+
+        .kunjungan-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 16px; transition: 0.2s; }
+        .kunjungan-card:hover { border-color: #064e3b; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <a href="/" class="header-back">← Kembali ke Beranda & Antrean</a>
+
+        <!-- Profil Pasien -->
+        <div class="patient-profile-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 22px; font-weight: 800;"><%= pasien.nama %> <span style="font-size: 14px; font-weight: 500; opacity: 0.9;">(ID: <%= pasien.id %>)</span></h2>
+                <span style="background: rgba(251, 191, 36, 0.2); color: #fbbf24; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; border: 1px solid rgba(251, 191, 36, 0.4);">Status: <%= pasien.status_antrean || 'Menunggu' %></span>
+            </div>
+            <div class="profile-grid">
+                <div class="profile-item"><label>NIK Pasien</label><span><%= pasien.nik || '-' %></span></div>
+                <div class="profile-item"><label>Usia / Suami</label><span><%= pasien.usia %> Tahun / <%= pasien.suami %></span></div>
+                <div class="profile-item"><label>No. Telepon</label><span><%= pasien.telepon || '-' %></span></div>
+                <div class="profile-item"><label>Riwayat Obstetri</label><span><%= pasien.riwayat_obstetri %></span></div>
+            </div>
+        </div>
+
+        <div class="layout-grid">
+            <!-- Form Input Pemeriksaan Medis (SOAP & Lab Plano Tes) -->
+            <div class="card-box">
+                <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 800; color: #064e3b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Pemeriksaan Klinis & SOAP</h3>
+                
+                <form action="/pasien/<%= pasien.id %>/kunjungan" method="POST">
+                    <div class="form-group">
+                        <label>Jenis Layanan:</label>
+                        <!-- Tambahan Kolom Keluhan Utama (S) -->
+<div class="mb-3">
+    <label for="keluhan" class="form-label font-weight-bold" style="font-weight: 700; color: #064e3b; margin-bottom: 6px; display: block;">Keluhan Utama (S):</label>
+    <textarea class="form-control" id="keluhan" name="keluhan" rows="2" placeholder="Cth: Ingin pasang IUD, nyeri perut bawah, dll..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit;"></textarea>
+</div>
+                        <select name="jenis_layanan" class="form-control" style="cursor: pointer;">
+                            <option value="USG">USG</option>
+                            <option value="Rawat Luka Perenium">Rawat Luka Perenium</option>
+                            <option value="Rawat Luka Pasca OP">Rawat Luka Pasca OP</option>
+                            <option value="Pasang IUD">Pasang IUD</option>
+                            <option value="Lepas IUD">Lepas IUD</option>
+                            <option value="Pasang Pesarium">Pasang Pesarium</option>
+                            <option value="Persalinan normal">Persalinan normal</option>
+                            <option value="Pasang O2">Pasang O2</option>
+                            <option value="Pasang Laminaria">Pasang Laminaria</option>
+                            <option value="VT">VT</option>
+                            <option value="Pemeriksaan Gynecologi">Pemeriksaan Gynecologi</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group"><label>HPHT (Kehamilan):</label><input type="date" name="hpht" class="form-control"></div>
+                        <div class="form-group"><label>Tekanan Darah (TD):</label><input type="text" name="td" value="<%= pasien.td || '' %>" class="form-control" placeholder="120/80"></div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group"><label>Berat Badan (BB):</label><input type="text" name="bb" value="<%= pasien.bb || '' %>" class="form-control" placeholder="65 Kg"></div>
+                        <div class="form-group"><label>TFU (Tinggi Fundus):</label><input type="text" name="tfu" class="form-control" placeholder="Cth: 28 cm"></div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group"><label>DJJ (Denyut Jantung Janin):</label><input type="text" name="djj" class="form-control" placeholder="Cth: 144 dpm"></div>
+                        <div class="form-group"><label>USG / EFW (Taksiran Janin):</label><input type="text" name="usg_efw" class="form-control" placeholder="Cth: 2400 gram"></div>
+                    </div>
+
+                    <!-- Fitur Order Lab Plano Tes / Tespek -->
+                    <div class="form-group">
+                        <label>Order Pemeriksaan Lab:</label>
+                        <div class="lab-checklist-box">
+                            <label class="lab-item"><input type="checkbox" name="order_lab" value="Plano Tes / Tespek"> Plano Tes / Tespek</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group"><label>Diagnosa Dokter:</label><input type="text" name="diagnosa" class="form-control" placeholder="Cth: G2P1A0 Usia Kehamilan 32 Minggu T/H..." required></div>
+                    <div class="form-group"><label>Terapi / Resep Obat:</label><textarea name="terapi" class="form-control" rows="2" placeholder="Cth: Tablet Fe 1x1, Kalsium..." style="resize: none;" required></textarea></div>
+
+                    <!-- Bagian Kasir / Pembiayaan -->
+                    <h4 style="margin: 16px 0 8px 0; font-size: 14px; font-weight: 800; color: #064e3b;">
+
+                    <button type="submit" class="btn-submit">💾 Rekam Medis & Selesaikan Kunjungan →</button>
+                </form>
+            </div>
+
+            <!-- Riwayat Kunjungan Terdahulu Pasien -->
+            <div class="card-box">
+                <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 800; color: #064e3b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Riwayat Rekam Medis & Kunjungan</h3>
+                
+                <% if (!pasien.kunjungan || pasien.kunjungan.length === 0) { %>
+                    <p style="text-align: center; color: #94a3b8; padding: 40px;">Belum ada riwayat kunjungan medis tercatat untuk pasien ini.</p>
+                <% } else { %>
+                    <% pasien.kunjungan.forEach(k => { %>
+                        <div class="kunjungan-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <strong style="color: #064e3b; font-size: 14px;">📅 <%= k.tanggal %> — <span style="color: #d97706;"><%= k.jenis_layanan %></span></strong>
+                                <div style="display: flex; gap: 6px;">
+                                    <a href="/pasien/<%= pasien.id %>/cetak-surat/<%= k.id_kunjungan %>" target="_blank" style="background: #0284c7; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; text-decoration: none; font-weight: 700;">Surat</a>
+                                    <a href="/pasien/<%= pasien.id %>/cetak-kwitansi/<%= k.id_kunjungan %>" target="_blank" style="background: #059669; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; text-decoration: none; font-weight: 700;">Nota Kasir</a>
+                                </div>
+                            </div>
+                            <div style="font-size: 12px; color: #334155; line-height: 1.5;">
+                                • HPHT: <%= k.hpht %> | HPL: <%= k.hpl %> | Usia Kehamilan: <strong><%= k.usia_kehamilan %></strong><br>
+                                • TFU: <%= k.tfu %> | DJJ: <%= k.djj %> | EFW: <%= k.usg_efw %> | TD/BB: <%= k.td %> / <%= k.bb %><br>
+                                <% if (k.order_lab && k.order_lab.length > 0) { %>
+                                    • Order Lab: <span style="color: #0284c7; font-weight: 600;"><%= k.order_lab.join(', ') %></span><br>
+                                <% } %>
+                                • Diagnosa: <strong><%= k.diagnosa %></strong><br>
+                                • Terapi / Resep: <span style="color: #059669; font-weight: 600;"><%= k.terapi %></span><br>
+                                • Total Biaya: Rp <%= (k.kasir && k.kasir.total) ? k.kasir.total.toLocaleString('id-ID') : '0' %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

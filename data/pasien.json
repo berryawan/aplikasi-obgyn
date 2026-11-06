@@ -1,0 +1,115 @@
+[
+  {
+    "id": "POG-001",
+    "nama": "Ny. Siti Aminah",
+    "usia": 28,
+    "suami": "Tn. Ahmad",
+    "telepon": "08123456789",
+    "riwayat_obstetri": "G1P0A0",
+    "kunjungan": [
+      {
+        "id_kunjungan": "K-001",
+        "tanggal": "2026-10-16",
+        "hpht": "2026-02-15",
+        "hpl": "2026-11-22",
+        "usia_kehamilan": "34 Minggu 5 Hari",
+        "bb": 65,
+        "td": "120/80",
+        "tfu": "29 cm",
+        "djj": 140,
+        "usg_efw": "2300 gram",
+        "diagnosa": "G1P0A0 uk 34-35 minggu, janin tunggal hidup",
+        "terapi": "Tablet Tambah Darah, Kalsium"
+      }
+    ],
+    "status_antrean": "Diperiksa"
+  },
+  {
+    "id": "POG-002",
+    "nama": "wina",
+    "usia": "17",
+    "suami": "Mujiono",
+    "telepon": "00000000000000",
+    "riwayat_obstetri": "aborsi",
+    "kunjungan": [
+      {
+        "id_kunjungan": "K-1793886437457",
+        "tanggal": "2026-11-05",
+        "jenis_layanan": "VT",
+        "hpht": "2025-12-29",
+        "hpl": "2026-10-05",
+        "usia_kehamilan": "44 Minggu 4 Hari",
+        "bb": "65",
+        "td": "120/80",
+        "tfu": "155",
+        "djj": "144",
+        "usg_efw": "2400",
+        "order_lab": [],
+        "diagnosa": "r.080",
+        "terapi": "cefixim",
+        "kasir": {
+          "biaya_konsultasi": 0,
+          "biaya_usg": 0,
+          "biaya_obat": 0,
+          "biaya_lab": 0,
+          "total": 0
+        }
+      }
+    ],
+    "status_antrean": "Menunggu",
+    "alamat": "Kertonegoro",
+    "jenis_kunjungan": "Pasang IUD",
+    "tanggal_daftar": "2026-11-06",
+    "alasan_batal": "anaknya nangis"
+  },
+  {
+    "id": "POG-003",
+    "nama": "ANISA SI DOBOL",
+    "usia": "25",
+    "suami": "Mujiono",
+    "telepon": "000000000000",
+    "alamat": "Kertonegoro",
+    "riwayat_obstetri": "KENCING MANIS",
+    "status_antrean": "Selesai",
+    "kunjungan": []
+  },
+  {
+    "id": "POG-004",
+    "nama": "elma",
+    "usia": "21",
+    "suami": "bagus",
+    "telepon": "081222333444",
+    "alamat": "Tempurejo",
+    "riwayat_obstetri": "aborsi",
+    "status_antrean": "Diperiksa",
+    "kunjungan": []
+  },
+  {
+    "id": "POG-005",
+    "nama": "Ny. Siti Amanah",
+    "usia": "28",
+    "suami": "Tn. Ahmad",
+    "telepon": "08123456789",
+    "alamat": "Tempurejo",
+    "riwayat_obstetri": "G1P0A0",
+    "status_antrean": "Menunggu",
+    "kunjungan": []
+  },
+  {
+    "id": "POG-006",
+    "nik": "3509160710970001",
+    "nama": "ila",
+    "usia": "25",
+    "suami": "bagus",
+    "telepon": "081222333444",
+    "alamat": "Tempurejo",
+    "jenis_kunjungan": "USG",
+    "riwayat_obstetri": "aborsi",
+    "td": "-",
+    "bb": "-",
+    "keluhan": "-",
+    "tanggal_daftar": "2026-11-04",
+    "status_antrean": "Batal Layanan",
+    "kunjungan": []
+  }
+]

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login SIM-OBGYN — RS Utama Husada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f0f4f1; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 32px; border-radius: 20px; box-shadow: 0 10px 30px rgba(6,78,59,0.1); width: 380px; border: 1px solid #cbd5e1; }
+        .login-card h2 { color: #064e3b; margin-top: 0; font-weight: 800; text-align: center; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; box-sizing: border-box; }
+        .btn-login { background: #064e3b; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        .error-msg { background: #ffeeec; color: #dc2626; padding: 10px; border-radius: 8px; font-size: 12px; text-align: center; margin-bottom: 14px; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2>SIM-OBGYN Login</h2>
+        <p style="text-align: center; font-size: 12px; color: #64748b; margin-top: -8px; margin-bottom: 20px;">RS Utama Husada — Jember</p>
+        
+        <% if (error) { %>
+            <div class="error-msg"><%= error %></div>
+        <% } %>
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label>Username / Peran:</label>
+                <input type="text" name="username" class="form-control" placeholder="Cth: loket atau bidan" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-login">Masuk ke Sistem →</button>
+        </form>
+        <div style="margin-top: 16px; font-size: 11px; color: #94a3b8; text-align: center; line-height: 1.5;">
+            <b>Panduan Akun Demo:</b><br>
+            • Akun Loket Pendaftaran: username <b>loket</b> | pass <b>123</b><br>
+            • Akun Poli Kebidanan: username <b>bidan</b> | pass <b>123</b>
+        </div>
+    </div>
+</body>
+</html>

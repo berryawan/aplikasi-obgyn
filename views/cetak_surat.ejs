@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cetak Dokumen Medis — Praktik dr. Moch Sodiq Kukuh WS, SpOG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            background: #e2e8f0; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            color: #0f172a;
+        }
+
+        .no-print {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 148mm;
+            margin: 0 auto;
+            background: white;
+            padding: 20mm 25mm;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .kop-surat {
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+        .kop-title h2 { margin: 0; font-size: 18px; font-weight: 800; color: #064e3b; }
+        .kop-title p { margin: 2px 0 0 0; font-size: 11px; font-weight: 600; color: #475569; }
+
+        .surat-title {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 800;
+            text-decoration: underline;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        .content-body {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .grid-row {
+            display: grid;
+            grid-template-columns: 130px 15px 1fr;
+            margin-bottom: 6px;
+        }
+
+        /* Perbaikan Blok Tanda Tangan agar Rapi & Presisi */
+        .signature-section {
+            margin-top: 35px;
+            float: right;
+            text-align: left;
+            width: 260px;
+        }
+        .signature-section p {
+            margin: 0;
+            line-height: 1.4;
+        }
+        .doctor-name {
+            display: inline-block;
+            margin-top: 50px;
+            font-weight: 700;
+            border-bottom: 1px solid #0f172a;
+            padding-bottom: 2px;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+        .btn-print { background: #059669; color: white; }
+        .btn-back { background: #64748b; color: white; }
+
+        .input-editable {
+            border: none;
+            border-bottom: 1px dotted #94a3b8;
+            font-family: inherit;
+            font-size: 13px;
+            padding: 2px 4px;
+            background: #f8fafc;
+            border-radius: 4px;
+            outline: none;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .input-editable:focus {
+            background: #fff;
+            border-color: #059669;
+            box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.1);
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print { display: none; }
+            .page { box-shadow: none; padding: 10mm 15mm; width: 100%; border-radius: 0; }
+            .input-editable, select.input-editable {
+                background: transparent;
+                border-bottom: none;
+                padding: 0;
+                appearance: none;
+            }
+            .doctor-name {
+                border-bottom: 1px solid #0f172a !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Navigasi Cetak -->
+    <div class="no-print">
+        <a href="/pasien/<%= pasien.id %>" class="btn btn-back">← Kembali ke Detail Pasien</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <select id="pilihJenisSurat" class="btn" style="background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1;" onchange="gantiJenisSurat(this.value)">
+                <option value="hamil">📄 Surat Keterangan Hamil</option>
+                <option value="istirahat">🛌 Surat Keterangan Istirahat</option>
+                <option value="rujukan">🏥 Surat Rujukan</option>
+                <option value="kontrol">📅 Surat Kontrol / Rencana Kontrol</option>
+            </select>
+            <button onclick="window.print()" class="btn btn-print">🖨️ Cetak Surat Sekarang</button>
+        </div>
+    </div>
+
+    <!-- ================= 1. SURAT KETERANGAN HAMIL ================= -->
+    <div id="surat-hamil" class="page surat-container">
+        <div style="text-align: right; font-size: 12px; margin-bottom: 20px;">
+            Jember, <%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+        </div>
+
+        <div class="surat-title">SURAT KETERANGAN HAMIL</div>
+
+        <div class="content-body">
+            <p>Dengan ini menerangkan bahwa :</p>
+            <div class="grid-row"><span>Nama</span><span>:</span><strong><%= pasien.nama %></strong></div>
+            <div class="grid-row"><span>Umur</span><span>:</span><%= pasien.usia %> Tahun</div>
+            <div class="grid-row"><span>Pekerjaan</span><span>:</span><%= pasien.pekerjaan || '-' %></div>
+            <div class="grid-row"><span>Alamat</span><span>:</span><%= pasien.alamat %></div>
+            
+            <p style="margin-top: 18px;">
+                Sesuai dengan hasil pemeriksaan tanggal : <strong><%= kunjungan.tanggal %></strong><br>
+                HAMIL ± <strong><%= kunjungan.usia_kehamilan || '...' %></strong> (minggu / bulan)
+            </p>
+
+            <p style="margin-top: 25px;">Demikian surat keterangan ini untuk dapat dipergunakan seperlunya.</p>
+        </div>
+
+        <div class="signature-section">
+            <p>Dokter,</p>
+            <span class="doctor-name">dr. Moch Sodiq Kukuh WS, SpOG</span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- ================= 2. SURAT KETERANGAN ISTIRAHAT ================= -->
+    <div id="surat-istirahat" class="page surat-container" style="display: none;">
+        <div class="surat-title">SURAT KETERANGAN ISTIRAHAT</div>
+
+        <div class="content-body">
+            <p>Dengan ini menyatakan bahwa berdasarkan hasil pemeriksaan yang telah dilakukan pada pasien :</p>
+            <div class="grid-row"><span>Nama</span><span>:</span><strong><%= pasien.nama %></strong></div>
+            <div class="grid-row"><span>Usia</span><span>:</span><%= pasien.usia %> Tahun</div>
+            <div class="grid-row"><span>Alamat</span><span>:</span><%= pasien.alamat %></div>
+            <div class="grid-row"><span>Pekerjaan</span><span>:</span><%= pasien.pekerjaan || '-' %></div>
+
+            <p style="margin-top: 18px; line-height: 2.2;">
+                Membutuhkan istirahat selama 
+                <input type="text" class="input-editable" style="width: 60px; text-align: center;" placeholder="...">&nbsp;(...) hari 
+                terhitung mulai tanggal 
+                <input type="text" class="input-editable" style="width: 130px;" placeholder="tgl mulai">&nbsp;s.d tanggal 
+                <input type="text" class="input-editable" style="width: 130px;" placeholder="tgl selesai">.
+            </p>
+
+            <p style="margin-top: 25px;">Demikian surat keterangan ini diberikan untuk diketahui dan dipergunakan seperlunya.</p>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <p style="margin: 0;">Jember, <%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+            <div class="signature-section" style="margin-top: 15px;">
+                <span class="doctor-name">dr. Moch Sodiq Kukuh WS, SpOG</span>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- ================= 3. SURAT RUJUKAN ================= -->
+    <div id="surat-rujukan" class="page surat-container" style="display: none;">
+        <div class="kop-surat">
+            <div class="kop-title">
+                <h2>dr. Moch Sodiq Kukuh WS, SpOG</h2>
+                <p>Spesialis Kebidanan & Kandungan</p>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+            <div style="width: 320px;">
+                <span style="font-size: 13px; font-weight: 700;">Kepada Yth :</span><br>
+                <select id="pilihTujuan" class="input-editable" style="margin-top: 6px; cursor: pointer;" onchange="handleTujuanRujukan(this.value)">
+                    <option value="RS Utama Husada">RS Utama Husada</option>
+                    <option value="RS Kaliwates Jember">RS Kaliwates Jember</option>
+                    <option value="RS Citra Husada Jember">RS Citra Husada Jember</option>
+                    <option value="RS Paru Jember">RS Paru Jember</option>
+                    <option value="RSD Balung Jember">RSD Balung Jember</option>
+                    <option value="manual">-- Ketik Manual Lainnya --</option>
+                </select>
+                <input type="text" id="inputManualTujuan" class="input-editable" style="margin-top: 6px; display: none;" placeholder="Ketik nama dokter / instansi tujuan...">
+            </div>
+            <div style="text-align: right;">
+                Jember, <%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+            </div>
+        </div>
+
+        <div class="content-body">
+            <p style="margin-bottom: 8px;">Assalamu'alaikum wrwb</p>
+            <p style="margin-top: 0;">Dengan hormat,<br>Menghadapkan pasien :</p>
+            
+            <div class="grid-row"><span>Nama</span><span>:</span><strong><%= pasien.nama %></strong></div>
+            <div class="grid-row"><span>Usia</span><span>:</span><%= pasien.usia %> Tahun</div>
+            <div class="grid-row"><span>Alamat</span><span>:</span><%= pasien.alamat %></div>
+            <div class="grid-row"><span>Diagnosa</span><span>:</span><strong><%= kunjungan.diagnosa || '-' %></strong></div>
+            <div class="grid-row" style="margin-top: 6px;"><span>Terapi</span><span>:</span><%= kunjungan.terapi || '-' %></div>
+
+            <p style="margin-top: 20px;">Atas perhatian dan kerjasamanya, BTK</p>
+        </div>
+
+        <div class="signature-section">
+            <p style="margin-bottom: 10px;">Hormat kami,</p>
+            <span class="doctor-name">dr. Moch Sodiq Kukuh WS, SpOG</span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- ================= 4. SURAT KONTROL / RENCANA KONTROL ================= -->
+    <div id="surat-kontrol" class="page surat-container" style="display: none;">
+        <div class="kop-surat">
+            <div class="kop-title">
+                <h2>dr. Moch Sodiq Kukuh WS, SpOG</h2>
+                <p>Spesialis Kebidanan & Kandungan — Praktik Pribadi Jember</p>
+            </div>
+        </div>
+
+        <div class="surat-title">SURAT RENCANA KONTROL / KEMBALI</div>
+
+        <div class="content-body">
+            <p>Kepada Yth. Pasien / Keluarga,<br>Mohon untuk melakukan kunjungan kontrol kembali ke poliklinik dengan ketentuan sebagai berikut :</p>
+            
+            <div class="grid-row" style="margin-top: 15px;"><span>Nama Pasien</span><span>:</span><strong><%= pasien.nama %></strong></div>
+            <div class="grid-row"><span>No. ID / RM</span><span>:</span><%= pasien.id %></div>
+            <div class="grid-row"><span>Diagnosa Medis</span><span>:</span><strong><%= kunjungan.diagnosa || '-' %></strong></div>
+            
+            <div class="grid-row" style="margin-top: 15px;">
+                <span>Tanggal Kontrol</span><span>:</span>
+                <input type="date" class="input-editable" style="width: 200px;">
+            </div>
+            <div class="grid-row">
+                <span>Keterangan / Catatan</span><span>:</span>
+                <input type="text" class="input-editable" placeholder="Cth: Evaluasi USG / Cek Lab Lanjutan">
+            </div>
+
+            <p style="margin-top: 30px;">Demikian surat rencana kontrol ini diberikan agar dapat dipergunakan sebagaimana mestinya.</p>
+        </div>
+
+        <div class="signature-section">
+            <p style="margin-bottom: 10px;">Jember, <%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %><br>Dokter Pemeriksa,</p>
+            <span class="doctor-name">dr. Moch Sodiq Kukuh WS, SpOG</span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <script>
+        function gantiJenisSurat(jenis) {
+            document.querySelectorAll('.surat-container').forEach(el => el.style.display = 'none');
+            if (jenis === 'hamil') {
+                document.getElementById('surat-hamil').style.display = 'block';
+            } else if (jenis === 'istirahat') {
+                document.getElementById('surat-istirahat').style.display = 'block';
+            } else if (jenis === 'rujukan') {
+                document.getElementById('surat-rujukan').style.display = 'block';
+            } else if (jenis === 'kontrol') {
+                document.getElementById('surat-kontrol').style.display = 'block';
+            }
+        }
+
+        function handleTujuanRujukan(val) {
+            const inputManual = document.getElementById('inputManualTujuan');
+            if (val === 'manual') {
+                inputManual.style.display = 'block';
+                inputManual.focus();
+            } else {
+                inputManual.style.display = 'none';
+                inputManual.value = '';
+            }
+        }
+    </script>
+</body>
+</html>

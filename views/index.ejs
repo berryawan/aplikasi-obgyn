@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM-OBGYN — dr. Shodiq Kukuh, Sp.OG (RS Utama Husada)</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            background: #f0f4f1; 
+            color: #1e293b; 
+            padding: 24px; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0;
+        }
+        .app-container { max-width: 1450px; margin: auto; }
+
+        .app-header {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240, 247, 244, 0.95) 100%);
+            padding: 20px 28px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(6, 78, 59, 0.08);
+            border: 1px solid rgba(6, 78, 59, 0.15);
+        }
+        .brand-title h1 { margin: 0; font-size: 28px; font-weight: 800; color: #064e3b; letter-spacing: 0.5px; }
+        .brand-title p { margin: 2px 0 0 0; font-size: 13px; font-weight: 600; color: #64748b; }
+        .brand-title span { font-size: 13px; font-weight: 700; color: #064e3b; }
+
+        .header-nav { display: flex; gap: 12px; align-items: center; }
+        .nav-btn {
+            background: #ffffff;
+            color: #475569;
+            padding: 10px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #cbd5e1;
+            transition: 0.2s;
+        }
+        .nav-btn:hover { transform: translateY(-2px); border-color: #064e3b; }
+        .nav-btn.emerald { background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); color: white; border: none; }
+        .nav-btn.green { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; border: none; }
+        .nav-btn.logout { background: #dc2626; color: white; border: none; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .kpi-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .kpi-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .kpi-card h3 { margin: 0; font-size: 24px; font-weight: 800; color: #0f172a; display: flex; align-items: baseline; gap: 6px; }
+        .kpi-card p { margin: 0; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; }
+
+        .clock-card {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(6, 78, 59, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        .clock-card .time-val { font-size: 28px; font-weight: 800; line-height: 1; color: #fbbf24; }
+        .clock-card .date-val { font-size: 11px; font-weight: 700; color: #fef08a; margin-bottom: 2px; }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 24px;
+        }
+
+        .card-box {
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-title-box {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 14px;
+            margin: -24px -24px 22px -24px;
+            box-shadow: 0 6px 15px rgba(6, 78, 59, 0.25);
+            border-bottom: 3px solid #fbbf24;
+        }
+        .form-title-box h3 { margin: 0; font-size: 17px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; }
+        .form-title-box p { margin: 4px 0 0 0; font-size: 12px; color: #e2e8f0; }
+
+        .form-group { margin-bottom: 14px; position: relative; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 5px; }
+        
+        .form-control {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: 0.2s;
+            background: #fafafa;
+            color: #0f172a;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #064e3b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+        }
+
+        #suggestionsList {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .suggestion-item {
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .suggestion-item:hover {
+            background: #f0fdf4;
+            color: #064e3b;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(6, 78, 59, 0.35);
+            transition: 0.2s;
+            margin-top: 8px;
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+
+        .table-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(6, 78, 59, 0.1);
+        }
+        .search-box-input {
+            width: 240px;
+            padding: 8px 12px 8px 34px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .patient-table { width: 100%; border-collapse: collapse; }
+        .patient-table th {
+            background: #064e3b;
+            color: #ffffff;
+            padding: 12px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+        }
+        .patient-table th:first-child { border-radius: 10px 0 0 10px; }
+        .patient-table th:last-child { border-radius: 0 10px 10px 0; }
+
+        .patient-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 12px;
+            vertical-align: middle;
+            color: #334155;
+        }
+        .patient-table tr:hover { background: #f8fafc; }
+        
+        .badge-id {
+            background: #e6f4ea;
+            color: #064e3b;
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 11px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-action-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            justify-content: center;
+            width: 140px;
+        }
+        .btn-medis {
+            background: #064e3b;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 10px;
+            flex: 1;
+            text-align: center;
+        }
+        .btn-edit {
+            background: #0284c7;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 700;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        .btn-batal {
+            background: #dc2626;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 700;
+            font-size: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <header class="app-header">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 52px; height: 52px; background: #e6f4ea; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; border: 1px solid #bbf7d0;">
+                    🤱
+                </div>
+                <div class="brand-title">
+                    <h1>SIM-OBGYN</h1>
+                    <p>Loket Pendaftaran Pasien &nbsp;—&nbsp; <span>RS Utama Husada</span></p>
+                </div>
+            </div>
+            
+            <div class="header-nav">
+                <a href="/antrean" class="nav-btn emerald">📺 Monitor Antrean</a>
+                <a href="/export-excel" class="nav-btn green">📥 Rekap Excel</a>
+                <a href="/login" class="nav-btn logout">🚪 Keluar Akun</a>
+            </div>
+        </header>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-card-top"><p>Total Master Pasien</p><div class="kpi-icon" style="background: #e6f4ea; color: #064e3b;">👥</div></div>
+                <h3><%= statistik.totalPasienTerdaftar || 0 %> <span style="font-size: 12px; font-weight: 600; color: #64748b;">Pasien</span></h3>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-card-top"><p>Pasien Hari Ini</p><div class="kpi-icon" style="background: #dcfce7; color: #16a34a;">✅</div></div>
+                <h3><%= statistik.pasienHariIni || 0 %> <span style="font-size: 12px; font-weight: 600; color: #64748b;">Pasien</span></h3>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-card-top"><p>Pasien Bulan Ini</p><div class="kpi-icon" style="background: #fef3c7; color: #d97706;">⏳</div></div>
+                <h3><%= statistik.pasienBulanIni || 0 %> <span style="font-size: 12px; font-weight: 600; color: #64748b;">Pasien</span></h3>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-card-top"><p>Pasien Tahun Ini</p><div class="kpi-icon" style="background: #e0f2fe; color: #0284c7;">✨</div></div>
+                <h3><%= statistik.pasienTahunIni || 0 %> <span style="font-size: 12px; font-weight: 600; color: #64748b;">Pasien</span></h3>
+            </div>
+            <div class="clock-card">
+                <div style="font-size: 28px;">📅</div>
+                <div>
+                    <div id="date-display" class="date-val">-</div>
+                    <div id="time-display" class="time-val">00:00</div>
+                    <div style="font-size: 9px; font-weight: 700; letter-spacing: 1px; opacity: 0.9;">WIB</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            
+            <!-- Form Pendaftaran -->
+            <div class="card-box" style="height: fit-content;">
+                <div class="form-title-box">
+                    <h3 id="formHeaderTitle">Registrasi Pendaftaran Pasien</h3>
+                    <p id="formHeaderDesc">Loket Administrasi Poliklinik</p>
+                </div>
+                
+                <form id="formPasien" action="/tambah-pasien" method="POST">
+                    <input type="hidden" id="editId" name="edit_id" value="">
+
+                    <div class="form-group">
+                        <label>NIK Pasien (16 Digit):</label>
+                        <input type="text" id="inputNik" name="nik" class="form-control" placeholder="Cth: 3509123456780001" maxlength="16" oninput="cariPasienLama(this.value)" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Pasien (Istri) / Cari NIK atau Nama:</label>
+                        <input type="text" id="inputNama" name="nama" class="form-control" placeholder="Ketik nama atau NIK pasien lama..." oninput="cariPasienLama(this.value)" autocomplete="off" required>
+                        <div id="suggestionsList"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Usia (Tahun):</label>
+                        <input type="number" id="inputUsia" name="usia" class="form-control" placeholder="Cth: 28" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Suami:</label>
+                        <input type="text" id="inputSuami" name="suami" class="form-control" placeholder="Cth: Tn. Ahmad" required>
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telepon / WhatsApp:</label>
+                        <input type="text" id="inputTelepon" name="telepon" class="form-control" placeholder="Cth: 08123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Domisili:</label>
+                        <input type="text" id="inputAlamat" name="alamat" class="form-control" placeholder="Cth: Patrang, Jember" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jenis Kunjungan / Layanan:</label>
+                        <select id="inputJenisKunjungan" name="jenis_kunjungan" class="form-control" style="cursor: pointer;">
+                            <option value="USG">USG</option>
+                            <option value="Rawat Luka Perenium">Rawat Luka Perenium</option>
+                            <option value="Rawat Luka Pasca OP">Rawat Luka Pasca OP</option>
+                            <option value="Pasang IUD">Pasang IUD</option>
+                            <option value="Lepas IUD">Lepas IUD</option>
+                            <option value="Pasang Pesarium">Pasang Pesarium</option>
+                            <option value="Persalinan normal">Persalinan normal</option>
+                            <option value="Pasang O2">Pasang O2</option>
+                            <option value="Pasang Laminaria">Pasang Laminaria</option>
+                            <option value="VT">VT</option>
+                            <option value="Pemeriksaan Gynecologi">Pemeriksaan Gynecologi</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" id="btnSubmitForm" class="btn-submit">✨ Daftarkan ke Antrean Hari Ini →</button>
+                    <button type="button" id="btnBatalEdit" onclick="resetForm()" style="display: none; background: #64748b; color: white; border: none; width: 100%; padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 8px;">Batal Edit</button>
+                </form>
+            </div>
+
+            <!-- Tabel Antrean Pasien Hari Ini -->
+            <div class="card-box">
+                <div class="table-header-flex">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="font-size: 20px;">📁</div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #064e3b;">Antrean Pasien Hari Ini</h3>
+                            <p style="margin: 2px 0 0 0; font-size: 11px; color: #64748b;">Daftar kunjungan poliklinik hari ini</p>
+                        </div>
+                    </div>
+                    <div>
+                        <form action="/pendaftaran" method="GET" style="display: flex; gap: 8px;">
+                            <input type="text" name="search" value="<%= search %>" class="search-box-input" placeholder="Cari NIK / nama / ID...">
+                            <button type="submit" class="btn-medis" style="border: none; cursor: pointer; padding: 9px 16px; height: 38px;">Cari</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="patient-table">
+                        <thead>
+                            <tr>
+                                <th>NO / ID</th>
+                                <th>NAMA PASIEN / NIK</th>
+                                <th>SUAMI</th>
+                                <th>KUNJUNGAN</th>
+                                <th>ALAMAT</th>
+                                <th style="text-align: center;">AKSI LOKET</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (!pasienList || pasienList.length === 0) { %>
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: #94a3b8; padding: 40px;">Belum ada antrean pasien untuk hari ini.</td>
+                                </tr>
+                            <% } else { %>
+                                <% pasienList.forEach(p => { %>
+                                    <tr>
+                                        <td><span class="badge-id"><%= p.id %></span></td>
+                                        <td>
+                                            <strong style="color: #0f172a;"><%= p.nama %></strong><br>
+                                            <span style="font-size: 11px; color: #64748b;">NIK: <%= p.nik || '-' %> | <%= p.usia %> thn</span>
+                                        </td>
+                                        <td><%= p.suami %></td>
+                                        <td><span style="font-size: 11px; font-weight: 700; color: #064e3b;"><%= p.jenis_kunjungan || 'USG' %></span></td>
+                                        <td><span style="background: #f8fafc; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid #e2e8f0;"><%= p.alamat || '-' %></span></td>
+                                        <td style="text-align: center;">
+                                            <div class="btn-action-group">
+                                                <button onclick="editPasien('<%= p.id %>')" class="btn-edit">Edit</button>
+                                                <button onclick="batalkanLayanan('<%= p.id %>', '<%= p.nama %>')" class="btn-batal">Hapus / Batal</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const masterDatabase = <%- JSON.stringify(masterPasienList || []) %>;
+        let selectedPasien = null;
+
+        function cariPasienLama(keyword) {
+            const listDiv = document.getElementById('suggestionsList');
+            if (!keyword || keyword.trim().length === 0) {
+                listDiv.style.display = 'none';
+                return;
+            }
+
+            const filter = keyword.toLowerCase();
+            const matches = masterDatabase.filter(p => 
+                (p.nama && p.nama.toLowerCase().includes(filter)) || 
+                (p.nik && p.nik.includes(filter)) || 
+                (p.telepon && p.telepon.includes(filter))
+            );
+
+            if (matches.length === 0) {
+                listDiv.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            matches.forEach(p => {
+                let totalKunjungan = p.kunjungan ? p.kunjungan.length : 0;
+                let infoKunjungan = totalKunjungan > 0 ? `${totalKunjungan}x kunjungan` : 'Pasien baru';
+
+                html += `<div class="suggestion-item" onclick="pilihPasienLama('${p.id}')">
+                    <strong style="color: #064e3b;">${p.nama}</strong> — NIK: ${p.nik || '-'}<br>
+                    <small style="color: #d97706;">Alamat: ${p.alamat || '-'} (${infoKunjungan})</small>
+                </div>`;
+            });
+            listDiv.innerHTML = html;
+            listDiv.style.display = 'block';
+        }
+
+        function pilihPasienLama(id) {
+            const p = masterDatabase.find(item => item.id === id);
+            if (p) {
+                document.getElementById('editId').value = p.id;
+                document.getElementById('inputNik').value = p.nik || '';
+                document.getElementById('inputNama').value = p.nama || '';
+                document.getElementById('inputUsia').value = p.usia || '';
+                document.getElementById('inputSuami').value = p.suami || '';
+                document.getElementById('inputTelepon').value = p.telepon || '';
+                document.getElementById('inputAlamat').value = p.alamat || '';
+                
+                if (p.jenis_kunjungan) {
+                    document.getElementById('inputJenisKunjungan').value = p.jenis_kunjungan;
+                }
+
+                alert(`Data Pasien "${p.nama}" Berhasil Ditarik Otomatis!\nSemua kolom form telah terisi.`);
+
+                document.getElementById('formHeaderTitle').innerText = `Kunjungan Pasien Lama (${p.id})`;
+                document.getElementById('formHeaderDesc').innerText = 'Data otomatis terisi — siap didaftarkan ke antrean';
+                document.getElementById('btnSubmitForm').innerText = '✨ Masukkan ke Antrean Hari Ini →';
+                document.getElementById('btnBatalEdit').style.display = 'block';
+            }
+            document.getElementById('suggestionsList').style.display = 'none';
+        }
+
+        function editPasien(id) {
+            const p = masterDatabase.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('editId').value = p.id;
+            document.getElementById('inputNik').value = p.nik || '';
+            document.getElementById('inputNama').value = p.nama || '';
+            document.getElementById('inputUsia').value = p.usia || '';
+            document.getElementById('inputSuami').value = p.suami || '';
+            document.getElementById('inputTelepon').value = p.telepon || '';
+            document.getElementById('inputAlamat').value = p.alamat || '';
+            if (p.jenis_kunjungan) {
+                document.getElementById('inputJenisKunjungan').value = p.jenis_kunjungan;
+            }
+
+            document.getElementById('formHeaderTitle').innerText = `Edit Data Pasien (${p.id})`;
+            document.getElementById('formHeaderDesc').innerText = 'Perbarui informasi pendaftaran pasien';
+            document.getElementById('btnSubmitForm').innerText = '💾 Simpan Perubahan →';
+            document.getElementById('btnBatalEdit').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('formPasien').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('formHeaderTitle').innerText = 'Registrasi Pendaftaran Pasien';
+            document.getElementById('formHeaderDesc').innerText = 'Loket Administrasi Poliklinik';
+            document.getElementById('btnSubmitForm').innerText = '✨ Daftarkan ke Antrean Hari Ini →';
+            document.getElementById('btnBatalEdit').style.display = 'none';
+        }
+
+        // Fungsi Batal Layanan dengan Wajib Ketik Alasan Tangan
+        function batalkanLayanan(id, nama) {
+            const alasan = prompt(`Masukkan alasan pembatalan untuk pasien "${nama}" (Wajib diisi):`);
+            
+            if (alasan === null) return; // Jika petugas menekan Cancel
+
+            if (alasan.trim() === '') {
+                alert('Alasan pembatalan wajib diisi!');
+                return;
+            }
+
+            fetch(`/pasien/batal/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ alasan: alasan })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Gagal membatalkan layanan.');
+                }
+            })
+            .catch(() => {
+                location.reload();
+            });
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            document.getElementById('date-display').innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            document.getElementById('time-display').innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
