@@ -99,7 +99,9 @@ app.get('/pendaftaran', async (req, res) => {
     });
 
     let pasienTampil = masterPasien.filter(p => {
-      const terdaftarHariIni = p.tanggal_daftar === today;
+      // Ambil bagian tanggal saja (YYYY-MM-DD) dari database
+      const tglPendaftaran = p.tanggal_daftar ? p.tanggal_daftar.substring(0, 10) : '';
+      const terdaftarHariIni = tglPendaftaran === today;
       const belumBatal = p.status_antrean !== 'Batal Layanan';
       return terdaftarHariIni && belumBatal;
     });
@@ -148,7 +150,8 @@ app.get('/kebidanan', async (req, res) => {
     const today = new Date().toLocaleDateString('en-CA');
 
     let pasienAntrean = masterPasien.filter(p => {
-      const terdaftarHariIni = p.tanggal_daftar === today;
+      const tglPendaftaran = p.tanggal_daftar ? p.tanggal_daftar.substring(0, 10) : '';
+      const terdaftarHariIni = tglPendaftaran === today;
       const belumSelesai =
         (!p.status_antrean || p.status_antrean === 'Menunggu' || p.status_antrean === 'Sedang Dilayani') &&
         p.status_antrean !== 'Batal Layanan';
