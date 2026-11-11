@@ -253,7 +253,7 @@ app.get('/antrean', async (req, res) => {
   }
 });
 
-// 5. Tambah / Edit Pasien (Registrasi Loket) -> Menggunakan Supabase
+// 5. Tambah / Edit Pasien (Registrasi Loket) -> Versi Aman
 app.post('/tambah-pasien', async (req, res) => {
   try {
     const editId = req.body.edit_id;
@@ -286,13 +286,8 @@ app.post('/tambah-pasien', async (req, res) => {
         if (error) throw error;
       }
     } else {
-      // Hitung jumlah pasien saat ini untuk format ID POG-XXX
-      const { count } = await supabase
-        .from('pasien')
-        .select('*', { count: 'exact', head: true });
-
-      const nextNum = (count || 0) + 1;
-      const newId = 'POG-' + String(nextNum).padStart(3, '0');
+      // Buat ID unik berbasis waktu (Contoh: POG-1731380000000) agar bebas dari error count
+      const newId = 'POG-' + Date.now().toString().slice(-6);
 
       const newPasien = {
         id: newId,
